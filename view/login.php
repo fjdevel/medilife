@@ -1,5 +1,16 @@
 <?php
     include_once('./global.php');
+
+    if($_SERVER["REQUEST_METHOD"] == "POST") {
+        require_once('./controller/LoginController.php');
+        $controller = new LoginController();
+        $auth = $controller->autenticar($_POST['email'],$_POST['pass']);
+        if($auth){
+            session_start();
+            $_SESSION['auth'] = true;
+            header('location:dashboard');
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,9 +42,9 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Inicia sesion para acceder al sistema</p>
 
-      <form action="../../index3.html" method="post">
+      <form method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input name="email" type="email" class="form-control" placeholder="Email" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -41,7 +52,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input name="pass" type="password" class="form-control" placeholder="Password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
