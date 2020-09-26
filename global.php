@@ -1,0 +1,4 @@
+<?php
+$domain = '/MediLife'
+
+?>
