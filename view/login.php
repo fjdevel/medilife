@@ -5,10 +5,13 @@
         require_once('./controller/LoginController.php');
         $controller = new LoginController();
         $auth = $controller->autenticar($_POST['email'],$_POST['pass']);
+        
         if($auth){
             session_start();
             $_SESSION['auth'] = true;
-            header('location:dashboard');
+            header('Location:'.$domain.'/dashboard');
+        }else{
+            print('Credenciales incorrectas');
         }
     }
 ?>
