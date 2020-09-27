@@ -1,9 +1,16 @@
-!DOCTYPE html>
+<?php
+//solo si esta auntenticado mostrara el dashboard
+if($_SESSION['auth']==true){
+    require_once('./controller/UserController.php');
+    $userController = new UserController();
+    $user = $userController->obtenerUsuarioByEmail($_SESSION['email']);
+?>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>MediLife| Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -43,7 +50,12 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        
+        <li class="nav-item">
+            <a href="cerrarSesion" class="nav-link">
+              <i class="nav-icon fas fa-user-times"></i>
+              <p>DCerrar Sesion</p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -69,12 +81,16 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
+        <?php
+            if($user->tipousuario==1){//si es admin
+                $cantUser = $userController->userCount()['count'];
+        ?>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3><?php echo $cantUser; ?></h3>
 
                 <p>Usuarios Registrados</p>
               </div>
@@ -85,6 +101,7 @@
             </div>
           </div>
           <!-- ./col -->
+        <?php }?>
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -140,3 +157,10 @@
 <script src="assets/dist/js/demo.js"></script>
 </body>
 </html>
+
+
+<?php
+}else{
+    header('Location:'.$domain.'/');
+}
+?>
